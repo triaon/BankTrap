@@ -1,0 +1,13 @@
+__pycache__/
+*.sqlite
+*.sqlite-*
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+*.log
+banktrap-evidence.json
+.idea/
+.vscode/

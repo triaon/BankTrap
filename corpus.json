@@ -1,0 +1,30 @@
+{
+  "description": "Открытый синтетический regression-набор. Независимый банковский holdout нужен в пилоте.",
+  "acceptance": [
+    {"name":"tautology-spaced", "username":"user' OR 'x' = 'x' --", "attack":true},
+    {"name":"numeric", "username":"admin' OR 2=2 --", "attack":true},
+    {"name":"mixed-case", "username":"a' oR 'a'='a", "attack":true},
+    {"name":"double-quotes", "username":"a\" OR \"q\"=\"q\"", "attack":true},
+    {"name":"union", "username":"x' UNION SELECT name FROM demo --", "attack":true},
+    {"name":"union-all", "username":"x' UNION ALL SELECT 1 --", "attack":true},
+    {"name":"sql-comment-space", "username":"x' UNION/**/SELECT 1 --", "attack":true},
+    {"name":"union-newline", "username":"x' union\nselect 1 --", "attack":true},
+    {"name":"demo-account", "username":"client-demo", "attack":false},
+    {"name":"apostrophe", "username":"o'reilly", "attack":false},
+    {"name":"cyrillic", "username":"иван.петров", "attack":false},
+    {"name":"email", "username":"demo@example.test", "attack":false},
+    {"name":"union-name", "username":"union_member", "attack":false},
+    {"name":"select-name", "username":"select_user", "attack":false},
+    {"name":"or-prefix", "username":"orlov", "attack":false},
+    {"name":"equal", "username":"user=demo", "attack":false},
+    {"name":"hyphen", "username":"demo-client-01", "attack":false},
+    {"name":"space", "username":"demo user", "attack":false},
+    {"name":"numeric-name", "username":"123456", "attack":false},
+    {"name":"unicode", "username":"тест_ё_01", "attack":false}
+  ],
+  "limitations": [
+    {"name":"AND-based SQLi is outside this template", "username":"admin' AND 1=1 --"},
+    {"name":"Time-based SQLi is outside this template", "username":"admin'; SELECT pg_sleep(5)--"},
+    {"name":"Potential false positive: SQL phrase as username", "username":"union select"}
+  ]
+}

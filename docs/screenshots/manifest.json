@@ -1,0 +1,45 @@
+{
+  "captured_at": "2026-10-31T19:58:20.304Z",
+  "viewport": {
+    "width": 1440,
+    "height": 1100
+  },
+  "kind": "Screenshots of running local application; synthetic data",
+  "frames": [
+    {
+      "file": "01-start.png",
+      "title": "Начальное состояние",
+      "description": "SOC подключён. Событий ещё нет, правило выключено."
+    },
+    {
+      "file": "02-before-rule.png",
+      "title": "Запрос без правила",
+      "description": "Шлюз пропускает SQLi-запрос: HTTP 200."
+    },
+    {
+      "file": "03-attack-event.png",
+      "title": "Событие атаки",
+      "description": "Приманка имитирует вход. В журнале появляется «Попытка SQLi» с меткой T1190."
+    },
+    {
+      "file": "04-rule-validation.png",
+      "title": "Проверка правила",
+      "description": "На демонстрационном наборе: 8 атак обнаружено, 12 обычных запросов пропущено. Известные ограничения перечислены в интерфейсе."
+    },
+    {
+      "file": "05-attack-blocked.png",
+      "title": "Атака заблокирована",
+      "description": "После включения правила тот же запрос получает HTTP 403."
+    },
+    {
+      "file": "06-normal-request.png",
+      "title": "Обычный запрос проходит",
+      "description": "Логин с апострофом o'reilly получает HTTP 200 при включённом правиле."
+    },
+    {
+      "file": "07-rollback.png",
+      "title": "Откат",
+      "description": "Правило отключено. Повторный запрос снова получает HTTP 200."
+    }
+  ]
+}

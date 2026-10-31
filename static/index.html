@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BankTrap — рабочий стенд</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#workspace">BankTrap</a>
+    <p class="sidebar-caption">MVP</p>
+    <nav aria-label="Разделы стенда">
+      <a href="#workspace">Рабочий стенд</a>
+      <a href="#bank-panel">Приложение банка</a>
+      <a href="#rule-panel">Правило защиты</a>
+      <a href="#events-panel">Журнал событий</a>
+    </nav>
+  </aside>
+
+  <div class="workspace" id="workspace">
+    <header class="topbar">
+      <span>Рабочий стенд</span>
+      <span id="connection" class="connection">SOC не подключён</span>
+    </header>
+    <main>
+      <div class="page-heading">
+        <div><h1>Проверка правила</h1><p>Банковское веб-приложение · SQL-инъекция</p></div>
+        <div class="toolbar">
+          <button id="reset" class="secondary">Сбросить демо</button>
+          <button id="download" class="secondary">Скачать отчёт</button>
+        </div>
+      </div>
+
+      <details id="access" class="access" open>
+        <summary>Доступ оператора</summary>
+        <div class="access-form">
+          <label for="token">Токен из терминала<input id="token" type="password" placeholder="Вставьте токен запущенного сервера" autocomplete="off"></label>
+          <button id="connect">Подключить SOC</button>
+          <p>Токен нужен для просмотра событий и управления правилом.</p>
+        </div>
+      </details>
+
+      <div class="grid">
+        <section class="panel bank" id="bank-panel" aria-labelledby="bank-title">
+          <div class="panel-heading"><h2 id="bank-title">Приложение банка</h2><span class="label">Приманка</span></div>
+          <div class="panel-body">
+            <p class="section-description">Вход в ДемоБанк</p>
+            <form id="login-form">
+              <div class="fields">
+                <label for="username">Логин<input id="username" value="client-demo" maxlength="512" autocomplete="off" spellcheck="false"></label>
+                <label for="password">Пароль<input id="password" type="password" value="demo123" maxlength="512" autocomplete="off"></label>
+              </div>
+              <button id="login" type="submit">Войти</button>
+            </form>
+            <div class="scenario-heading">Сценарии</div>
+            <div class="actions scenarios">
+              <button class="secondary" id="sqli">Подставить SQLi</button>
+              <button class="secondary" id="canary">Учётка-приманка</button>
+              <button class="secondary" id="brute">5 неудачных входов</button>
+              <button class="secondary" id="admin">Открытая админка</button>
+            </div>
+            <div id="bank-result" class="result neutral">Вход ещё не выполнен.</div>
+            <button class="text-button" id="transfer">Имитировать перевод 1 000 DEMO</button>
+          </div>
+        </section>
+
+        <section class="panel" id="rule-panel" aria-labelledby="rule-title">
+          <div class="panel-heading"><h2 id="rule-title">Правило защиты</h2><span id="rule-state" class="label">Не создано</span></div>
+          <div class="panel-body">
+            <div class="rule-summary"><strong id="rule-name">Нет правила</strong><p id="rule-description">Отправьте SQLi-запрос в приманку, затем создайте кандидат.</p></div>
+            <div class="actions">
+              <button id="generate">Создать кандидат</button>
+              <button id="validate" class="secondary">Проверить на наборе</button>
+            </div>
+            <details class="rule-code"><summary>Посмотреть JSON</summary><pre id="rule">Правило ещё не создано.</pre></details>
+            <div class="scenario-heading">Результаты проверки</div>
+            <div id="metrics" class="metrics"><p class="muted">Проверка ещё не запускалась.</p></div>
+            <p id="limitations" class="footnote">Тестовый набор: 8 атак и 12 обычных запросов. Результат относится только к этому набору.</p>
+          </div>
+        </section>
+
+        <section class="panel gateway" id="gateway-panel" aria-labelledby="gateway-title">
+          <div class="panel-heading"><h2 id="gateway-title">Шлюз</h2><span id="mode" class="label">Правило выключено</span></div>
+          <div class="gateway-body">
+            <div>
+              <div class="actions"><button id="activate">Включить проверенный кандидат</button><button id="disable" class="secondary">Откатить</button></div>
+              <div class="actions"><button id="attack-gateway" class="secondary">Повторить SQLi</button><button id="normal-gateway" class="secondary">Обычный запрос</button></div>
+              <p class="footnote">Проверяет запросы. Банковские операции не выполняет.</p>
+            </div>
+            <div id="gateway-result" class="result neutral">Запрос ещё не отправлен.</div>
+          </div>
+        </section>
+
+        <section class="panel events" id="events-panel" aria-labelledby="events-title">
+          <div class="panel-heading"><h2 id="events-title">Журнал событий <span id="count" class="count">0</span></h2><span class="muted">Обновление раз в секунду</span></div>
+          <div class="table-scroll" tabindex="0" aria-label="Журнал событий">
+            <table>
+              <thead><tr><th>Время</th><th>Событие</th><th>Источник</th><th>ATT&amp;CK</th><th>Подробности</th></tr></thead>
+              <tbody id="events"><tr><td class="empty" colspan="5">Подключитесь, чтобы увидеть события.</td></tr></tbody>
+            </table>
+          </div>
+          <p class="table-note">Метка ATT&amp;CK описывает предполагаемую технику, а не подтверждает успешный взлом.</p>
+        </section>
+      </div>
+      <p id="status" role="status">Подключите оператора, чтобы начать работу.</p>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
